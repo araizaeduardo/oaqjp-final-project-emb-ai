@@ -7,6 +7,10 @@ def emotion_detector(text_to_analyse):
     header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
     response = requests.post(url, json=myobj, headers=header)
     
+    # Añade un print para depuración
+    print(f"Response status code: {response.status_code}")
+    print(f"Response text: {response.text}")
+    
     if response.status_code == 400:
         emotions_response = {
             'anger': None,
