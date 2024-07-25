@@ -6,13 +6,18 @@ app = Flask("Emotion Detector")
 
 @app.route("/emotionDetector", methods=['GET'])
 def sent_detection():
-    # Obtén el texto a analizar desde los parámetros de la URL
     text_to_analyze = request.args.get("textToAnalyze")
+    
+    emotions = emotion_detector(text_to_analyze)
 
     if not text_to_analyze:
         return Response(json.dumps({"error": "textToAnalyze parameter is missing"}), mimetype='application/json', status=400)
 
-    emotions = emotion_detector(text_to_analyze)
+    
+
+    if emotions['dominant_emotion'] is None:
+        return Response(json.dumps({"error": "Invalid text! Please try again!"}), mimetype='application/json', status=400)
+
 
     result = (f"For the given statement, the system response is 'anger': {emotions['anger']}, "
               f"'disgust': {emotions['disgust']}, 'fear': {emotions['fear']}, "
